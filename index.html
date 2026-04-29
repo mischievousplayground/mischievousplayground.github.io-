@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mischievous playground</title>
+<script src="data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -204,13 +205,11 @@ h1::before{content:'♡ ';color:#f4a7b9;font-size:36px;vertical-align:middle;}
   text-decoration:none;color:inherit;
 }
 .zine-card:hover{transform:translateY(-6px) rotate(1deg);box-shadow:4px 10px 20px rgba(0,0,0,.1);}
-
-.zine-cover-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none;}
+.zine-cover-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;}
 .zine-cover-grad{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;}
 .zine-info-bottom{padding:9px 11px 11px;border-top:1px solid rgba(0,0,0,.06);}
 .zine-title{font-size:12px;font-weight:700;line-height:1.4;color:#333;}
-.zine-icon{font-size:20px;margin-top:auto;padding-top:8px;}
-.zine-star{position:absolute;top:8px;right:8px;font-size:14px;color:rgba(255,255,255,.8);}
+.zine-icon{font-size:20px;}
 .live-badge-sm{position:absolute;top:8px;left:8px;z-index:2;background:#2d2d2d;color:white;font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;letter-spacing:.4px;}
 .soon-overlay-sm{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.72);backdrop-filter:blur(2px);text-align:center;padding:5px;font-size:11px;font-weight:700;color:#aaa;z-index:3;}
 
@@ -339,7 +338,6 @@ footer{
   .sticky-top{display:none;}
 }
 </style>
-<script src="data.js"></script>
 </head>
 <body>
 
@@ -601,17 +599,17 @@ document.addEventListener('click', e => {
 const s=document.createElement('style');
 s.textContent='@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.3);}}';
 document.head.appendChild(s);
-</script>
 
-<script>
-// ── Render latest zines on homepage from ZINES_DATA ──
-(function() {
+// ── Render latest zines from ZINES_DATA (loaded via data.js in <head>) ──
+function renderHomeZines() {
   const row = document.getElementById('home-zine-row');
-  if (!row || !window.ZINES_DATA) return;
-
-  // Show 4 most recent (first 4 in array)
-  const latest = ZINES_DATA.slice(0, 4);
-
+  if (!row) return;
+  const data = window.ZINES_DATA;
+  if (!data || !data.length) {
+    row.innerHTML = '<div style="color:#ddd;font-size:14px;padding:20px;">no zines yet ♡</div>';
+    return;
+  }
+  const latest = data.slice(0, 4);
   row.innerHTML = latest.map(z => {
     const thumb = z.cover
       ? `<div style="position:relative;">
@@ -620,18 +618,18 @@ document.head.appendChild(s);
          </div>`
       : `<div class="zine-cover-grad" style="background:${z.bg};">
            ${z.live ? '<span class="live-badge-sm">✦ LIVE</span>' : ''}
-           ${z.icon}
+           <span>${z.icon}</span>
            ${!z.live ? '<div class="soon-overlay-sm">coming soon~</div>' : ''}
          </div>`;
-
     return `<a href="${z.link}" class="zine-card" style="${!z.live ? 'opacity:.85' : ''}">
       ${thumb}
-      <div class="zine-info-bottom">
-        <div class="zine-title">${z.title}</div>
-      </div>
+      <div class="zine-info-bottom"><div class="zine-title">${z.title}</div></div>
     </a>`;
   }).join('');
-})();
+}
+
+// Run after DOM is ready — data.js is already loaded synchronously in <head>
+document.addEventListener('DOMContentLoaded', renderHomeZines);
 </script>
 </body>
 </html>

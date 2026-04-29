@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>zines — mischievous playground</title>
+<script src="data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -333,22 +334,9 @@ nav{
   padding:3px 9px;border-radius:4px;
   letter-spacing:.5px;
 }
-.live-badge{
-  position:absolute;top:10px;left:10px;z-index:2;
-  background:#2d2d2d;color:white;
-  font-size:10px;font-weight:800;
-  padding:3px 9px;border-radius:4px;letter-spacing:.4px;
-}
-.soon-overlay{
-  position:absolute;bottom:0;left:0;right:0;
-  background:rgba(255,255,255,.72);backdrop-filter:blur(2px);
-  text-align:center;padding:5px;
-  font-size:11px;font-weight:700;color:#aaa;z-index:3;
-}
-.zine-cover-full{
-  width:100%;aspect-ratio:3/4;object-fit:cover;
-  display:block;pointer-events:none;-webkit-user-drag:none;
-}
+.live-badge{position:absolute;top:10px;left:10px;z-index:2;background:#2d2d2d;color:white;font-size:10px;font-weight:800;padding:3px 9px;border-radius:4px;letter-spacing:.4px;}
+.soon-overlay{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.72);backdrop-filter:blur(2px);text-align:center;padding:5px;font-size:11px;font-weight:700;color:#aaa;z-index:3;}
+.zine-cover-full{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none;}
 
 .thumb-icon{
   position:absolute;bottom:12px;right:12px;
@@ -403,7 +391,6 @@ nav{
   #grid{grid-template-columns:repeat(2,1fr);}
 }
 </style>
-<script src="data.js"></script>
 </head>
 <body>
 
@@ -564,10 +551,8 @@ nav{
 </div>
 
 <script>
-// ── Use shared data from data.js ──
+// ── Data loaded from data.js (in <head>) ──
 const ZINES = window.ZINES_DATA || [];
-
-// Auto-compute tag counts from data
 const TAG_COUNTS = {};
 ZINES.forEach(z => z.tags.forEach(t => { TAG_COUNTS[t] = (TAG_COUNTS[t] || 0) + 1; }));
 </script>
@@ -648,11 +633,9 @@ function renderZines() {
     const liveBadge = z.live ? '<span class="live-badge">✦ LIVE</span>' : '';
     const newBadge  = z.isNew && !z.live ? '<span class="new-badge">NEW</span>' : '';
     const soon      = !z.live ? '<div class="soon-overlay">coming soon~</div>' : '';
-
     const thumb = z.cover
       ? `<div style="position:relative;">${liveBadge}<img class="zine-cover-full" src="${z.cover}" alt="${z.title}" loading="lazy"></div>`
       : `<div class="zine-thumb" style="background:${z.bg};">${liveBadge}${newBadge}<div class="zine-thumb-title">${z.title}</div>${z.icon?`<span class="thumb-icon2">${z.icon}</span>`:''}${soon}</div>`;
-
     return `
     <a href="${z.link}" class="zine-card" style="animation-delay:${i*.07}s;${!z.live?'opacity:.85':''}">
       ${thumb}
@@ -672,10 +655,12 @@ function goRandom() {
 
 document.getElementById('search').addEventListener('input', renderZines);
 
-// init
-renderSidebarTags();
-renderFilterTags();
-renderZines();
+// init — wait for DOM
+document.addEventListener('DOMContentLoaded', () => {
+  renderSidebarTags();
+  renderFilterTags();
+  renderZines();
+});
 </script>
 </body>
 </html>
