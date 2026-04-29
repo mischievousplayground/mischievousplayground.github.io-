@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>mischievous playground</title>
-<script src="data.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -149,7 +148,7 @@ h1::before{content:'♡ ';color:#f4a7b9;font-size:36px;vertical-align:middle;}
 .cat-line{height:3px;border-radius:3px;width:56px;margin:6px auto 10px;}
 .cat-desc{font-size:13px;color:#999;line-height:1.5;}
 
-/* ── MAIN GRID: zines full width, ww+disc 2-col below ── */
+/* ── MAIN GRID ── */
 .main-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -192,15 +191,10 @@ h1::before{content:'♡ ';color:#f4a7b9;font-size:36px;vertical-align:middle;}
 .zine-row{display:flex;gap:12px;}
 
 .zine-card{
-  flex:1;
-  border-radius:12px;
-  overflow:hidden;
-  position:relative;
-  cursor:none;
+  flex:1;border-radius:12px;overflow:hidden;position:relative;cursor:none;
   transition:transform .22s,box-shadow .22s;
   display:flex;flex-direction:column;
-  background:white;
-  border:1.5px solid rgba(0,0,0,.07);
+  background:white;border:1.5px solid rgba(0,0,0,.07);
   box-shadow:1px 2px 0 rgba(0,0,0,.04);
   text-decoration:none;color:inherit;
 }
@@ -209,7 +203,6 @@ h1::before{content:'♡ ';color:#f4a7b9;font-size:36px;vertical-align:middle;}
 .zine-cover-grad{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;}
 .zine-info-bottom{padding:9px 11px 11px;border-top:1px solid rgba(0,0,0,.06);}
 .zine-title{font-size:12px;font-weight:700;line-height:1.4;color:#333;}
-.zine-icon{font-size:20px;}
 .live-badge-sm{position:absolute;top:8px;left:8px;z-index:2;background:#2d2d2d;color:white;font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;letter-spacing:.4px;}
 .soon-overlay-sm{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.72);backdrop-filter:blur(2px);text-align:center;padding:5px;font-size:11px;font-weight:700;color:#aaa;z-index:3;}
 
@@ -484,10 +477,45 @@ footer{
 <!-- ══ MAIN 3-COL ══ -->
 <div class="main-grid">
 
-  <!-- LATEST ZINES — rendered from ZINES_DATA in data.js -->
+  <!-- LATEST ZINES -->
   <div class="box box-zines">
     <div class="box-title">latest zines <svg width="20" height="18" viewBox="0 0 20 18" style="margin-left:2px;"><path d="M5 16 L8 6 L10 12 L13 4 L15 10 L18 2" stroke="#f4a7b9" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="zine-row" id="home-zine-row"></div>
+    <div class="zine-row">
+
+      <!-- zine 1: LIVE — lazy & affordable skincare routine -->
+      <a href="zines/skincare-routine.html" class="zine-card">
+        <div style="position:relative;">
+          <span class="live-badge-sm">✦ LIVE</span>
+          <img class="zine-cover-img" src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777475340/a_e8vbyt.png" alt="lazy & affordable skincare routine" loading="lazy">
+        </div>
+        <div class="zine-info-bottom"><div class="zine-title">lazy &amp; affordable skincare routine</div></div>
+      </a>
+
+      <!-- zine 2: coming soon -->
+      <a href="upcoming.html" class="zine-card" style="opacity:.85;">
+        <div class="zine-cover-grad" style="background:linear-gradient(160deg,#e8d8f8,#d4b8f0);">
+          🔍<div class="soon-overlay-sm">coming soon~</div>
+        </div>
+        <div class="zine-info-bottom"><div class="zine-title">how i check ingredients</div></div>
+      </a>
+
+      <!-- zine 3: coming soon -->
+      <a href="upcoming.html" class="zine-card" style="opacity:.85;">
+        <div class="zine-cover-grad" style="background:linear-gradient(160deg,#fff8dc,#ffe89a);">
+          🌙<div class="soon-overlay-sm">coming soon~</div>
+        </div>
+        <div class="zine-info-bottom"><div class="zine-title">night routine</div></div>
+      </a>
+
+      <!-- zine 4: coming soon -->
+      <a href="upcoming.html" class="zine-card" style="opacity:.85;">
+        <div class="zine-cover-grad" style="background:linear-gradient(160deg,#d8f0e8,#b8e4d0);">
+          💛<div class="soon-overlay-sm">coming soon~</div>
+        </div>
+        <div class="zine-info-bottom"><div class="zine-title">empties diary</div></div>
+      </a>
+
+    </div>
     <div style="position:absolute;bottom:40px;left:-8px;width:55px;height:16px;border-radius:3px;transform:rotate(-45deg);opacity:.5;background:repeating-linear-gradient(90deg,rgba(168,200,232,.7) 0,rgba(168,200,232,.35) 4px,rgba(168,200,232,.7) 8px);"></div>
     <a href="zines.html" style="display:inline-block;margin-top:14px;font-size:14px;font-weight:700;color:#f4a7b9;text-decoration:none;border-bottom:1.5px dashed #f4a7b9;">view all zines →</a>
   </div>
@@ -599,37 +627,6 @@ document.addEventListener('click', e => {
 const s=document.createElement('style');
 s.textContent='@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.3);}}';
 document.head.appendChild(s);
-
-// ── Render latest zines from ZINES_DATA (loaded via data.js in <head>) ──
-function renderHomeZines() {
-  const row = document.getElementById('home-zine-row');
-  if (!row) return;
-  const data = window.ZINES_DATA;
-  if (!data || !data.length) {
-    row.innerHTML = '<div style="color:#ddd;font-size:14px;padding:20px;">no zines yet ♡</div>';
-    return;
-  }
-  const latest = data.slice(0, 4);
-  row.innerHTML = latest.map(z => {
-    const thumb = z.cover
-      ? `<div style="position:relative;">
-           ${z.live ? '<span class="live-badge-sm">✦ LIVE</span>' : ''}
-           <img class="zine-cover-img" src="${z.cover}" alt="${z.title}" loading="lazy">
-         </div>`
-      : `<div class="zine-cover-grad" style="background:${z.bg};">
-           ${z.live ? '<span class="live-badge-sm">✦ LIVE</span>' : ''}
-           <span>${z.icon}</span>
-           ${!z.live ? '<div class="soon-overlay-sm">coming soon~</div>' : ''}
-         </div>`;
-    return `<a href="${z.link}" class="zine-card" style="${!z.live ? 'opacity:.85' : ''}">
-      ${thumb}
-      <div class="zine-info-bottom"><div class="zine-title">${z.title}</div></div>
-    </a>`;
-  }).join('');
-}
-
-// Run after DOM is ready — data.js is already loaded synchronously in <head>
-document.addEventListener('DOMContentLoaded', renderHomeZines);
 </script>
 </body>
 </html>
