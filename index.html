@@ -6,36 +6,30 @@
 <title>mischievous playground</title>
 <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
+/* ─────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────── */
 :root{
   --bg:#fafaf8;
   --grid:rgba(200,220,255,.07);
   --text:#2d2d2d;
-  --text-soft:#555;
   --text-mute:#999;
   --text-dim:#bbb;
   --card:#ffffff;
   --card-border:rgba(0,0,0,.07);
   --card-border-strong:rgba(0,0,0,.08);
   --shadow:rgba(0,0,0,.04);
-  --shadow-hover:rgba(0,0,0,.1);
-  --underline:rgba(0,0,0,.15);
-  --divider:rgba(0,0,0,.06);
-  --sticky-bg:#e8d5f5;
-  --footer-note:#fffde7;
+  --shadow-hover:rgba(0,0,0,.12);
   --pink:#f4a7b9;
   --purple:#c9a6e8;
   --yellow:#ffd97d;
   --green:#a8d8a8;
   --blue:#a8c8e8;
 }
-
 body.dark{
   --bg:#15131f;
   --grid:rgba(180,160,220,.05);
   --text:#f0ebf5;
-  --text-soft:#c9b8d8;
   --text-mute:#8a7d99;
   --text-dim:#6c627a;
   --card:#221f30;
@@ -43,10 +37,6 @@ body.dark{
   --card-border-strong:rgba(255,255,255,.1);
   --shadow:rgba(0,0,0,.3);
   --shadow-hover:rgba(0,0,0,.5);
-  --underline:rgba(255,255,255,.18);
-  --divider:rgba(255,255,255,.07);
-  --sticky-bg:#3a2d52;
-  --footer-note:#3a3520;
   --pink:#f8b8c9;
   --purple:#d9bbf0;
   --yellow:#ffe09a;
@@ -54,6 +44,10 @@ body.dark{
   --blue:#bcd4ee;
 }
 
+/* ─────────────────────────────────────────
+   BASE
+───────────────────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
   background:var(--bg);
   font-family:'Indie Flower','Nunito',cursive;
@@ -65,544 +59,536 @@ body{
     linear-gradient(var(--grid) 1px,transparent 1px),
     linear-gradient(90deg,var(--grid) 1px,transparent 1px);
   background-size:28px 28px;
-  transition:background-color .5s ease,color .5s ease;
+  transition:background-color .5s,color .5s;
 }
 
-/* ── cursor ── */
-#cur{position:fixed;width:20px;height:20px;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);}
+/* ─────────────────────────────────────────
+   CURSOR
+───────────────────────────────────────── */
+#cur{
+  position:fixed;width:20px;height:20px;
+  pointer-events:none;z-index:99999;
+  transform:translate(-50%,-50%);
+  transition:transform .06s ease;
+}
 
-/* ══════ HERO BANNER ══════ */
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
 .hero{
-  position:relative;
-  width:100%;
-  height:100vh;
-  min-height:600px;
+  position:relative;width:100%;
+  height:100vh;min-height:600px;
   overflow:hidden;
 }
 .hero-img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-  opacity:0;
-  transition:opacity .6s ease;
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;opacity:0;
+  transition:opacity .6s;
 }
 .hero-img.active{opacity:1;}
 
-/* ══════ CONTENT WRAPPER (everything below hero) ══════ */
-.content{
-  position:relative;
-  padding-top:50px;
-}
-
-/* ── CATEGORIES ── */
-.categories{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  padding:36px 60px 10px;
-  flex-wrap:wrap;
-  position:relative;
-}
-
-.section-label{
-  text-align:center;
-  font-size:18px;
-  font-weight:700;
-  color:var(--text-mute);
-  margin-bottom:6px;
-  letter-spacing:.5px;
-}
-.section-label .deco{color:var(--pink);margin:0 8px;}
-
-.cat-card{
-  background:var(--card);
-  border:1.5px solid var(--card-border-strong);
-  border-radius:18px;
-  padding:30px 28px 24px;
-  width:220px;
-  text-align:center;
-  cursor:none;
-  transition:transform .22s,box-shadow .22s,background .4s,border-color .4s;
-  text-decoration:none;color:inherit;
-  display:block;
-  box-shadow:1px 2px 0 var(--shadow);
-}
-.cat-card:hover{transform:translateY(-7px) rotate(-1deg);box-shadow:4px 10px 22px var(--shadow-hover);}
-
-.cat-icon{margin-bottom:14px;display:flex;justify-content:center;}
-.cat-name{font-size:22px;font-weight:800;display:block;margin-bottom:4px;}
-.cat-line{height:3px;border-radius:3px;width:56px;margin:6px auto 10px;}
-.cat-desc{font-size:13px;color:var(--text-mute);line-height:1.5;}
-
-/* ── MAIN GRID ── */
-.main-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-  padding:32px 60px 20px;
-  position:relative;
-}
-.box-zines{grid-column:1 / -1;}
-.box-ww,.box-disc{grid-column:span 1;}
-
-.box{
-  background:var(--card);
-  border:1.5px solid var(--card-border);
-  border-radius:18px;
-  padding:24px 22px;
-  position:relative;
-  box-shadow:1px 2px 0 var(--shadow);
-  transition:background .4s,border-color .4s;
-}
-
-/* tape on boxes */
-.box::before{
-  content:'';position:absolute;
-  top:-9px;left:18px;
-  width:50px;height:16px;border-radius:2px;opacity:.55;
-}
-.box-zines::before{background:repeating-linear-gradient(90deg,rgba(244,167,185,.6) 0,rgba(244,167,185,.3) 4px,rgba(244,167,185,.6) 8px);}
-.box-ww::before{background:repeating-linear-gradient(90deg,rgba(168,200,232,.6) 0,rgba(168,200,232,.3) 4px,rgba(168,200,232,.6) 8px);}
-.box-disc::before{background:repeating-linear-gradient(90deg,rgba(168,216,168,.6) 0,rgba(168,216,168,.3) 4px,rgba(168,216,168,.6) 8px);}
-
-.box-title{
-  font-size:19px;font-weight:800;
-  margin-bottom:16px;
-  display:flex;align-items:center;gap:8px;
-  text-decoration:underline;
-  text-decoration-color:var(--underline);
-  text-underline-offset:3px;
-}
-
-/* zine cards row */
-.zine-row{display:flex;gap:12px;}
-
-.zine-card{
-  flex:1;border-radius:12px;overflow:hidden;position:relative;cursor:none;
-  transition:transform .22s,box-shadow .22s;
-  display:flex;flex-direction:column;
-  background:var(--card);border:1.5px solid var(--card-border);
-  box-shadow:1px 2px 0 var(--shadow);
-  text-decoration:none;color:inherit;
-}
-.zine-card:hover{transform:translateY(-6px) rotate(1deg);box-shadow:4px 10px 20px var(--shadow-hover);}
-.zine-cover-img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;pointer-events:none;}
-.zine-cover-grad{width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:28px;position:relative;}
-.zine-info-bottom{padding:9px 11px 11px;border-top:1px solid var(--divider);}
-.zine-title{font-size:12px;font-weight:700;line-height:1.4;color:var(--text);}
-.live-badge-sm{position:absolute;top:8px;left:8px;z-index:2;background:#2d2d2d;color:white;font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;letter-spacing:.4px;}
-body.dark .live-badge-sm{background:#f0ebf5;color:#15131f;}
-.soon-overlay-sm{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.72);backdrop-filter:blur(2px);text-align:center;padding:5px;font-size:11px;font-weight:700;color:#aaa;z-index:3;}
-body.dark .soon-overlay-sm{background:rgba(34,31,48,.78);color:#bbb;}
-
-/* list items word world / discovery */
-.list-item{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:11px 0;
-  border-bottom:1px solid var(--divider);
-  cursor:none;
-  transition:color .2s;
-  text-decoration:none;color:inherit;
-  font-size:14px;
-  gap:8px;
-}
-.list-item:last-child{border-bottom:none;}
-.list-item.ww-item:hover{color:var(--blue);}
-.list-item.disc-item:hover{color:var(--green);}
-
-.li-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-.li-txt{flex:1;font-weight:600;}
-.li-arr{color:var(--text-dim);font-size:15px;flex-shrink:0;}
-
-.see-all{
-  display:inline-block;margin-top:14px;
-  font-size:14px;font-weight:700;
-  text-decoration:none;
-  transition:opacity .2s;
-}
-.see-all:hover{opacity:.65;}
-
-/* star decorations on box titles */
-.title-star{font-size:20px;}
-
-/* ══════ FOOTER ══════ */
-footer{
-  position:relative;
-  padding:30px 60px 44px;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  align-items:end;
-  gap:20px;
-}
-
-.f-left{
-  font-size:14px;font-weight:700;color:var(--text-mute);line-height:1.7;
-  background:var(--footer-note);
-  border:1px solid var(--card-border);
-  padding:14px 16px 18px;
-  width:140px;
-  box-shadow:2px 3px 8px var(--shadow-hover);
-  transform:rotate(-1deg);
-  position:relative;
-  transition:background .4s,border-color .4s;
-}
-.f-left::before{
-  content:'';position:absolute;top:-9px;left:10px;
-  width:38px;height:14px;border-radius:2px;
-  background:rgba(168,216,168,.5);
-}
-.f-left span{color:var(--purple);}
-
-.f-center{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  font-size:15px;font-weight:700;color:var(--text-dim);
-}
-
-/* cat in footer */
-.footer-cat{display:flex;align-items:flex-end;gap:0;position:relative;}
-.cat-speech{
-  background:var(--card);border:2px solid var(--text);border-radius:16px;
-  padding:8px 14px;font-size:14px;font-weight:700;
-  position:absolute;left:80px;bottom:40px;white-space:nowrap;
-  transition:background .4s,border-color .4s;
-}
-.cat-speech::after{
-  content:'';position:absolute;bottom:-13px;left:16px;
-  border:8px solid transparent;border-top-color:var(--text);
-}
-.cat-speech::before{
-  content:'';position:absolute;bottom:-8px;left:18px;
-  border:6px solid transparent;border-top-color:var(--card);z-index:1;
-}
-
-.f-right{
-  text-align:right;
-  font-size:14px;font-weight:700;color:var(--text-mute);
-  display:flex;flex-direction:column;align-items:flex-end;gap:4px;
-}
-.pink-bar{
-  display:inline-block;
-  background:rgba(244,167,185,.25);
-  padding:4px 12px;border-radius:4px;
-  color:var(--text-mute);font-size:14px;
-  margin-bottom:4px;
-}
-.pink-bar span{color:var(--pink);}
-
-body.dark .pink-bar{background:rgba(248,184,201,.18);}
-
-/* doodles */
-.doodle{
-  position:absolute;
-  pointer-events:none;user-select:none;
-  animation:dfloat var(--dur,4s) ease-in-out infinite;
-  animation-delay:var(--del,0s);
-}
-@keyframes dfloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg));}50%{transform:translateY(-7px) rotate(var(--r,0deg));}}
-
-/* ── entrance animations ── */
-.cat-card,.box{opacity:0;transform:translateY(14px);animation:up .5s ease forwards;}
-.cat-card:nth-child(1){animation-delay:.1s;}
-.cat-card:nth-child(2){animation-delay:.18s;}
-.cat-card:nth-child(3){animation-delay:.26s;}
-.cat-card:nth-child(4){animation-delay:.34s;}
-.box-zines{animation-delay:.4s;}
-.box-ww{animation-delay:.5s;}
-.box-disc{animation-delay:.58s;}
-@keyframes up{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-
-/* hint scroll */
 .scroll-hint{
-  position:absolute;
-  left:50%;bottom:32px;
+  position:absolute;left:50%;bottom:32px;
   transform:translateX(-50%);
-  color:white;
-  font-size:14px;
-  font-weight:700;
-  letter-spacing:.5px;
-  text-shadow:0 2px 8px rgba(0,0,0,.4);
-  text-align:center;
-  animation:bounceY 2s ease-in-out infinite;
-  pointer-events:none;
-  z-index:5;
+  color:white;font-size:14px;font-weight:700;
+  letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,.4);
+  text-align:center;animation:bounceY 2s ease-in-out infinite;
+  pointer-events:none;z-index:5;
 }
 .scroll-hint .arrow{display:block;font-size:22px;margin-top:4px;}
 @keyframes bounceY{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,8px);}}
 
-/* responsive */
-@media(max-width:900px){
+/* ─────────────────────────────────────────
+   SECTION LABEL
+───────────────────────────────────────── */
+.section-label{
+  text-align:center;font-size:18px;font-weight:700;
+  color:var(--text-mute);letter-spacing:.5px;
+}
+.section-label .deco{color:var(--pink);margin:0 8px;}
+
+/* ─────────────────────────────────────────
+   PLAYGROUND MAP — LARGE
+───────────────────────────────────────── */
+.playground-map{
+  padding:44px 30px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+}
+
+.map-container{
+  position:relative;
+  width:100%;
+  /* big enough to fill 13" Macbook at ~1280px CSS viewport */
+  max-width:1240px;
+  border-radius:20px;overflow:hidden;
+  box-shadow:0 6px 32px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.05);
+  transition:box-shadow .4s;
+}
+body.dark .map-container{
+  box-shadow:0 8px 40px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.25);
+}
+
+.map-img{display:block;width:100%;height:auto;transition:opacity .6s;user-select:none;pointer-events:none;}
+.map-dark{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;}
+body.dark .map-light{opacity:0;}
+body.dark .map-dark {opacity:1;}
+
+/* ── HOTSPOTS
+   Positions based on the actual map illustration:
+   scraps=green left, lens=blue center-top,
+   words=purple right, playroom=yellow center-bottom, me=pink house right
+── */
+.hs{
+  position:absolute;cursor:none;text-decoration:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .25s,transform .22s;
+  /* slightly rounded to follow island shapes */
+  border-radius:50%;
+}
+.hs:hover{background:rgba(255,255,255,.2);transform:scale(1.03);}
+body.dark .hs:hover{background:rgba(255,255,255,.12);}
+
+/* scraps — green island, left */
+#hs-scraps  { left:1%;  top:17%; width:31%; height:70%; }
+/* lens — blue lake, center top */
+#hs-lens    { left:28%; top:4%;  width:34%; height:53%; }
+/* words — purple island, right */
+#hs-words   { left:62%; top:17%; width:30%; height:58%; }
+/* playroom — yellow sand, center bottom */
+#hs-playroom{ left:26%; top:48%; width:38%; height:42%; }
+/* me — pink house, bottom right */
+#hs-me      { left:61%; top:47%; width:33%; height:48%; }
+
+/* tooltip */
+.hs-tip{
+  position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  background:var(--card);border:1.5px solid var(--card-border-strong);
+  border-radius:20px;padding:5px 14px;font-size:13px;font-weight:800;
+  white-space:nowrap;pointer-events:none;
+  opacity:0;transition:opacity .18s;
+  box-shadow:0 4px 14px var(--shadow-hover);z-index:10;
+}
+.hs:hover .hs-tip{opacity:1;}
+#hs-scraps   .hs-tip{color:#f4a7b9;border-color:rgba(244,167,185,.4);}
+#hs-lens     .hs-tip{color:#a8d8a8;border-color:rgba(168,216,168,.4);}
+#hs-words    .hs-tip{color:#a8c8e8;border-color:rgba(168,200,232,.4);}
+#hs-playroom .hs-tip{color:#ffd97d;border-color:rgba(255,217,125,.4);}
+#hs-me       .hs-tip{color:#c9a6e8;border-color:rgba(201,166,232,.4);}
+
+/* mobile pill nav */
+.map-mobile-nav{
+  display:none;flex-wrap:wrap;justify-content:center;gap:10px;padding:0 20px;
+}
+.mobile-link{
+  padding:9px 22px;border-radius:20px;font-size:14px;font-weight:800;
+  text-decoration:none;border:1.5px solid;transition:transform .2s,opacity .2s;
+}
+.mobile-link:active{transform:scale(.96);}
+
+/* ─────────────────────────────────────────
+   LATEST SCRAPS — table bg + card overlay
+───────────────────────────────────────── */
+.latest-section{
+  position:relative;
+  line-height:0; /* kill gap under img */
+}
+
+/* table images: light sits in normal flow → sets section height */
+.table-img{
+  display:block;width:100%;height:auto;
+  transition:opacity .6s;
+  user-select:none;pointer-events:none;
+}
+.table-dark-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .6s;
+  z-index:1;
+}
+body.dark .table-dark-img{opacity:1;}
+body.dark .table-light   {opacity:0;}
+
+/* card overlay — sits on the gingham tablecloth area
+   top ~50% ≈ where the tablecloth surface begins in the illustration
+   nudge up/down if cards land above/below the table surface */
+.latest-cards-overlay{
+  position:absolute;
+  top:50%;
+  left:5%;right:5%;
+  z-index:2;
+  line-height:normal;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+
+/* zine card grid */
+.zine-row{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  width:100%;
+}
+
+.zine-card{
+  border-radius:14px;overflow:hidden;
+  display:flex;flex-direction:column;
+  background:var(--card);
+  border:1.5px solid var(--card-border);
+  /* soft shadow so cards lift off the tablecloth */
+  box-shadow:2px 4px 16px rgba(0,0,0,.12),0 1px 0 var(--shadow);
+  text-decoration:none;color:inherit;
+  cursor:none;
+  transition:transform .22s,box-shadow .22s,background .4s,border-color .4s;
+}
+.zine-card:hover{
+  transform:translateY(-8px) rotate(1deg);
+  box-shadow:6px 16px 32px rgba(0,0,0,.18);
+}
+body.dark .zine-card{
+  box-shadow:2px 4px 16px rgba(0,0,0,.4),0 1px 0 var(--shadow);
+}
+
+.zine-thumb{
+  width:100%;aspect-ratio:4/3;
+  object-fit:cover;display:block;
+  pointer-events:none;
+}
+.zine-thumb-grad{
+  width:100%;aspect-ratio:4/3;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;position:relative;
+}
+
+.zine-info{
+  padding:9px 11px 12px;
+  border-top:1px solid var(--divider);
+}
+.zine-name{
+  font-size:12px;font-weight:700;line-height:1.4;color:var(--text);
+}
+
+/* badges */
+.live-badge{
+  position:absolute;top:8px;left:8px;z-index:2;
+  background:#2d2d2d;color:white;
+  font-size:9px;font-weight:800;
+  padding:2px 8px;border-radius:3px;letter-spacing:.4px;
+}
+body.dark .live-badge{background:#f0ebf5;color:#15131f;}
+
+.soon-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(2px);
+  text-align:center;padding:5px;
+  font-size:11px;font-weight:700;color:#aaa;z-index:3;
+}
+body.dark .soon-overlay{background:rgba(34,31,48,.78);color:#bbb;}
+
+.see-all-link{
+  font-size:14px;font-weight:800;
+  color:#f4a7b9;text-decoration:none;
+  border-bottom:1.5px dashed #f4a7b9;
+  padding-bottom:1px;transition:opacity .2s;
+  text-shadow:0 1px 4px rgba(255,255,255,.7);
+}
+body.dark .see-all-link{text-shadow:0 1px 4px rgba(0,0,0,.5);}
+.see-all-link:hover{opacity:.65;}
+
+/* divider token (needed by zine-info) */
+:root{ --divider:rgba(0,0,0,.06); }
+body.dark{ --divider:rgba(255,255,255,.07); }
+
+/* ─────────────────────────────────────────
+   FOOTER — illustrated image
+───────────────────────────────────────── */
+.footer-section{
+  position:relative;
+  width:100%;
+  display:block;
+  margin-top:-2px; /* prevent gap between table and footer */
+}
+.footer-bg{
+  display:block;width:100%;height:auto;
+  transition:opacity .6s;
+  user-select:none;pointer-events:none;
+  vertical-align:bottom;
+}
+.footer-dark-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .6s;
+}
+body.dark .footer-dark-img{opacity:1;}
+body.dark .footer-light   {opacity:0;}
+
+/* ─────────────────────────────────────────
+   ENTRANCE ANIMATIONS
+───────────────────────────────────────── */
+.playground-map,.latest-section{
+  opacity:0;transform:translateY(16px);
+  animation:up .55s ease forwards;
+}
+.playground-map {animation-delay:.08s;}
+.latest-section {animation-delay:.22s;}
+.footer-section {animation:fadeIn .8s ease .4s both;}
+@keyframes up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media(max-width:1024px){
+  .playground-map{padding:32px 20px 12px;}
+}
+
+@media(max-width:768px){
   .hero{height:70vh;min-height:480px;}
-  .categories,.main-grid{padding-left:20px;padding-right:20px;}
-  .main-grid{grid-template-columns:1fr;}
-  .box-zines,.box-ww,.box-disc{grid-column:1;}
-  footer{padding:30px 20px 30px;grid-template-columns:1fr;}
+  .playground-map{padding:28px 12px 10px;}
+  .map-container .hs{display:none;}
+  .map-mobile-nav{display:flex;}
+  .latest-cards-overlay{top:44%;left:3%;right:3%;}
+  .zine-row{grid-template-columns:repeat(2,1fr);}
+}
+
+@media(max-width:480px){
+  .latest-cards-overlay{top:38%;}
+  .zine-row{grid-template-columns:1fr 1fr;gap:8px;}
 }
 </style>
 </head>
 <body>
 
+<!-- ── custom cursor ── -->
 <div id="cur">
-  <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="4.5" fill="#f4a7b9" opacity=".9"/><circle cx="10" cy="10" r="8" stroke="#f4a7b9" stroke-width="1.4" opacity=".35"/></svg>
+  <svg viewBox="0 0 20 20" fill="none">
+    <circle cx="10" cy="10" r="4.5" fill="#f4a7b9" opacity=".9"/>
+    <circle cx="10" cy="10" r="8" stroke="#f4a7b9" stroke-width="1.4" opacity=".35"/>
+  </svg>
 </div>
 
-<!-- ══ HERO BANNER ══ -->
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
 <section class="hero">
   <img class="hero-img active" id="heroLight"
        src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777519506/new_dpfo3j.png"
        alt="mischievous playground">
   <img class="hero-img" id="heroDark"
        src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777519575/new-darkmode_xeovkc.png"
-       alt="mischievous playground">
-
+       alt="mischievous playground dark">
   <div class="scroll-hint">
     scroll for more
     <span class="arrow">↓</span>
   </div>
 </section>
 
-<!-- ══ CONTENT BELOW HERO ══ -->
 <div class="content">
 
-  <div class="section-label">
-    <span class="deco">✦</span> wander around <span class="deco">✦</span>
-  </div>
+  <!-- ══════════════════════════════════════
+       PLAYGROUND MAP
+  ══════════════════════════════════════ -->
+  <section class="playground-map">
 
-  <!-- ══ CATEGORIES ══ -->
-  <section class="categories">
+    <div class="section-label">
+      <span class="deco">✦</span> wander around <span class="deco">✦</span>
+    </div>
 
-    <a href="zines.html" class="cat-card">
-      <div class="cat-icon">
-        <svg width="44" height="38" viewBox="0 0 44 38" fill="none">
-          <rect x="3" y="5" width="38" height="29" rx="3" stroke="#f4a7b9" stroke-width="2.2" fill="none"/>
-          <line x1="22" y1="5" x2="22" y2="34" stroke="#f4a7b9" stroke-width="2"/>
-          <path d="M8 12 Q15 10 22 12" stroke="#f4a7b9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <path d="M8 18 Q15 16 22 18" stroke="#f4a7b9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <path d="M22 12 Q29 10 36 12" stroke="#f4a7b9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <path d="M22 18 Q29 16 36 18" stroke="#f4a7b9" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <span class="cat-name">scraps</span>
-      <div class="cat-line" style="background:#f4a7b9;"></div>
-      <p class="cat-desc">my little books</p>
-    </a>
+    <div class="map-container">
+      <img class="map-img map-light"
+           src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777542953/menu_pkk3om.png"
+           alt="playground map">
+      <img class="map-img map-dark"
+           src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777542926/menu-dark_vwtodf.png"
+           alt="playground map dark">
 
-    <a href="discovery.html" class="cat-card">
-      <div class="cat-icon">
-        <svg width="42" height="40" viewBox="0 0 42 40" fill="none">
-          <circle cx="18" cy="18" r="13" stroke="#a8d8a8" stroke-width="2.2" fill="none"/>
-          <line x1="27" y1="27" x2="38" y2="38" stroke="#a8d8a8" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="18" cy="18" r="6" stroke="#a8d8a8" stroke-width="1.5" fill="none"/>
-        </svg>
-      </div>
-      <span class="cat-name">lens</span>
-      <div class="cat-line" style="background:#a8d8a8;"></div>
-      <p class="cat-desc">things i learn & explore</p>
-    </a>
+      <!-- HOTSPOTS — transparent clickable regions over each zone -->
+      <a href="zines.html"     class="hs" id="hs-scraps"  ><span class="hs-tip">scraps ♡</span></a>
+      <a href="discovery.html" class="hs" id="hs-lens"    ><span class="hs-tip">lens ✦</span></a>
+      <a href="words.html"     class="hs" id="hs-words"   ><span class="hs-tip">words ☆</span></a>
+      <a href="upcoming.html"  class="hs" id="hs-playroom"><span class="hs-tip">playroom ✿</span></a>
+      <a href="about.html"     class="hs" id="hs-me"      ><span class="hs-tip">me ◇</span></a>
+    </div>
 
-    <a href="words.html" class="cat-card">
-      <div class="cat-icon">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-          <path d="M8 28 Q8 34 14 34 L26 34 Q32 34 32 28 L32 14 Q32 8 26 8 L14 8 Q8 8 8 14 Z" stroke="#a8c8e8" stroke-width="2.2" fill="none"/>
-          <circle cx="16" cy="16" r="1.5" fill="#a8c8e8"/>
-          <circle cx="20" cy="16" r="1.5" fill="#a8c8e8"/>
-          <circle cx="24" cy="16" r="1.5" fill="#a8c8e8"/>
-          <path d="M12 24 Q20 30 28 24" stroke="#a8c8e8" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <span class="cat-name">words</span>
-      <div class="cat-line" style="background:#a8c8e8;"></div>
-      <p class="cat-desc">thoughts, notes & stories</p>
-    </a>
-
-    <a href="about.html" class="cat-card">
-      <div class="cat-icon">
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-          <circle cx="20" cy="20" r="16" stroke="#c9a6e8" stroke-width="2.2" fill="none"/>
-          <circle cx="14" cy="16" r="2" fill="#c9a6e8"/>
-          <circle cx="26" cy="16" r="2" fill="#c9a6e8"/>
-          <path d="M12 25 Q20 32 28 25" stroke="#c9a6e8" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <span class="cat-name">about</span>
-      <div class="cat-line" style="background:#c9a6e8;"></div>
-      <p class="cat-desc">me, this space & more</p>
-    </a>
+    <!-- mobile fallback -->
+    <nav class="map-mobile-nav">
+      <a href="zines.html"     class="mobile-link" style="color:#f4a7b9;border-color:rgba(244,167,185,.5);">scraps</a>
+      <a href="discovery.html" class="mobile-link" style="color:#a8d8a8;border-color:rgba(168,216,168,.5);">lens</a>
+      <a href="words.html"     class="mobile-link" style="color:#a8c8e8;border-color:rgba(168,200,232,.5);">words</a>
+      <a href="upcoming.html"  class="mobile-link" style="color:#ffd97d;border-color:rgba(255,217,125,.5);">playroom</a>
+      <a href="about.html"     class="mobile-link" style="color:#c9a6e8;border-color:rgba(201,166,232,.5);">me</a>
+    </nav>
 
   </section>
 
-  <!-- tape strips between sections -->
-  <div style="padding:16px 60px 0;display:flex;gap:12px;">
-    <div style="height:14px;width:90px;border-radius:3px;opacity:.4;background:repeating-linear-gradient(90deg,rgba(244,167,185,.7) 0,rgba(244,167,185,.35) 4px,rgba(244,167,185,.7) 8px);transform:rotate(-0.5deg);"></div>
-    <div style="height:14px;width:60px;border-radius:3px;opacity:.35;background:repeating-linear-gradient(90deg,rgba(201,166,232,.7) 0,rgba(201,166,232,.35) 4px,rgba(201,166,232,.7) 8px);transform:rotate(0.5deg);margin-left:200px;"></div>
-  </div>
+  <!-- ══════════════════════════════════════
+       LATEST SCRAPS
+       table bg image sets section height;
+       cards overlaid on the gingham tablecloth area
+  ══════════════════════════════════════ -->
+  <section class="latest-section">
 
-  <!-- ══ MAIN GRID ══ -->
-  <div class="main-grid">
+    <!-- illustrated backgrounds (light sets height) -->
+    <img class="table-img table-light"
+         src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777537529/table-empty_wtkqtz.png"
+         alt="fresh out of the oven">
+    <img class="table-img table-dark-img"
+         src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777537531/table-dark_jhhcrt.png"
+         alt="">
 
-    <!-- LATEST SCRAPS -->
-    <div class="box box-zines">
-      <div class="box-title">latest scraps <svg width="20" height="18" viewBox="0 0 20 18" style="margin-left:2px;"><path d="M5 16 L8 6 L10 12 L13 4 L15 10 L18 2" stroke="#f4a7b9" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <!-- cards sit on the tablecloth (top ~50% of table image) -->
+    <div class="latest-cards-overlay">
+
       <div class="zine-row">
 
+        <!-- card 1 – LIVE -->
         <a href="zines/skincare-products.html" class="zine-card">
           <div style="position:relative;">
-            <span class="live-badge-sm">✦ LIVE</span>
-            <img class="zine-cover-img" src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777537895/a1_etbokz.png" alt="skincare - why I buy and use" loading="lazy">
+            <span class="live-badge">✦ LIVE</span>
+            <img class="zine-thumb"
+                 src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777537895/a1_etbokz.png"
+                 alt="lazy affordable skincare" loading="lazy">
           </div>
-          <div class="zine-info-bottom"><div class="zine-title">lazy &amp; affordable skincare routine</div></div>
+          <div class="zine-info"><div class="zine-name">Lazy &amp; affordable skincare routine</div></div>
         </a>
 
+        <!-- card 2 – LIVE -->
         <a href="zines/skincare-routine.html" class="zine-card">
           <div style="position:relative;">
-            <span class="live-badge-sm">✦ LIVE</span>
-            <img class="zine-cover-img" src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777475340/a_e8vbyt.png" alt="lazy & affordable skincare routine" loading="lazy">
+            <span class="live-badge">✦ LIVE</span>
+            <img class="zine-thumb"
+                 src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777475340/a_e8vbyt.png"
+                 alt="skincare routine" loading="lazy">
           </div>
-          <div class="zine-info-bottom"><div class="zine-title">lazy &amp; affordable skincare routine</div></div>
+          <div class="zine-info"><div class="zine-name">Skincare – why I buy and use</div></div>
         </a>
 
+        <!-- card 3 – coming soon -->
         <a href="upcoming.html" class="zine-card" style="opacity:.85;">
-          <div class="zine-cover-grad" style="background:linear-gradient(160deg,#fff8dc,#ffe89a);">
-            🌙<div class="soon-overlay-sm">coming soon~</div>
+          <div class="zine-thumb-grad" style="background:linear-gradient(145deg,#fff8dc,#ffe89a);">
+            🌙<div class="soon-overlay">coming soon~</div>
           </div>
-          <div class="zine-info-bottom"><div class="zine-title">night routine</div></div>
+          <div class="zine-info"><div class="zine-name">Skincare – Night routine</div></div>
         </a>
 
+        <!-- card 4 – coming soon -->
         <a href="upcoming.html" class="zine-card" style="opacity:.85;">
-          <div class="zine-cover-grad" style="background:linear-gradient(160deg,#d8f0e8,#b8e4d0);">
-            💛<div class="soon-overlay-sm">coming soon~</div>
+          <div class="zine-thumb-grad" style="background:linear-gradient(145deg,#d8f0e8,#b8e4d0);">
+            💛<div class="soon-overlay">coming soon~</div>
           </div>
-          <div class="zine-info-bottom"><div class="zine-title">empties diary</div></div>
+          <div class="zine-info"><div class="zine-name">Empties diary</div></div>
         </a>
 
       </div>
-      <a href="zines.html" style="display:inline-block;margin-top:14px;font-size:14px;font-weight:700;color:#f4a7b9;text-decoration:none;border-bottom:1.5px dashed #f4a7b9;">view all scraps →</a>
+
+      <a href="zines.html" class="see-all-link">view all scraps →</a>
+
     </div>
 
-    <!-- LENS -->
-    <div class="box box-disc">
-      <div class="box-title">
-        lens
-        <span class="title-star" style="margin-left:auto;">
-          <svg width="22" height="22"><circle cx="11" cy="11" r="7" stroke="#a8d8a8" stroke-width="1.8" fill="none"/><line x1="16" y1="16" x2="21" y2="21" stroke="#a8d8a8" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="3" stroke="#a8d8a8" stroke-width="1.5" fill="none"/></svg>
-        </span>
-      </div>
+  </section>
 
-      <a href="#" class="list-item disc-item"><span class="li-dot" style="background:#a8d8a8;"></span><span class="li-txt">how to read ingredient lists</span><span class="li-arr">→</span></a>
-      <a href="#" class="list-item disc-item"><span class="li-dot" style="background:#a8d8a8;"></span><span class="li-txt">japanese recycling labels guide</span><span class="li-arr">→</span></a>
-      <a href="#" class="list-item disc-item"><span class="li-dot" style="background:#a8d8a8;"></span><span class="li-txt">comedogenic rating explained</span><span class="li-arr">→</span></a>
-      <a href="#" class="list-item disc-item"><span class="li-dot" style="background:#a8d8a8;"></span><span class="li-txt">gentle skincare ingredients 101</span><span class="li-arr">→</span></a>
-
-      <a href="discovery.html" class="see-all" style="color:#a8d8a8;border-bottom:1.5px dashed #a8d8a8;">explore more →</a>
-    </div>
-
-    <!-- WORDS -->
-    <div class="box box-ww">
-      <div class="box-title">
-        words
-        <span class="title-star" style="margin-left:auto;">
-          <svg width="22" height="22"><polygon points="11,2 13.5,8 20,8 15,12 17,19 11,15 5,19 7,12 2,8 8.5,8" stroke="#a8c8e8" stroke-width="1.8" fill="none"/></svg>
-        </span>
-      </div>
-
-      <a href="#" class="list-item ww-item"><span class="li-dot" style="background:#a8c8e8;"></span><span class="li-txt">lessons from my morning pages</span><span class="li-arr">→</span></a>
-      <a href="#" class="list-item ww-item"><span class="li-dot" style="background:#a8c8e8;"></span><span class="li-txt">quotes that stay with me</span><span class="li-arr">→</span></a>
-      <a href="#" class="list-item ww-item"><span class="li-dot" style="background:#a8c8e8;"></span><span class="li-txt">a soft reminder for today</span><span class="li-arr">→</span></a>
-      <a href="#" class="list-item ww-item"><span class="li-dot" style="background:#a8c8e8;"></span><span class="li-txt">slow living, in my way</span><span class="li-arr">→</span></a>
-
-      <a href="words.html" class="see-all" style="color:#a8c8e8;border-bottom:1.5px dashed #a8c8e8;">see all articles →</a>
-    </div>
-
-  </div>
-
-  <!-- ══ FOOTER ══ -->
-  <footer>
-
-    <div class="f-left">
-      not perfect,<br>just trying<br>to be better <span>♡</span>
-    </div>
-
-    <div class="f-center">
-      <div class="footer-cat">
-        <svg width="90" height="82" viewBox="0 0 90 82" fill="none">
-          <ellipse cx="45" cy="62" rx="26" ry="18" fill="#1c1c1c"/>
-          <ellipse cx="45" cy="42" rx="23" ry="22" fill="#1c1c1c"/>
-          <polygon points="24,28 16,8 34,20" fill="#1c1c1c"/>
-          <polygon points="66,28 74,8 56,20" fill="#1c1c1c"/>
-          <polygon points="25,26 18,10 33,20" fill="#c9a6e8" opacity=".5"/>
-          <polygon points="65,26 72,10 57,20" fill="#c9a6e8" opacity=".5"/>
-          <ellipse cx="37" cy="40" rx="5" ry="5.5" fill="#ffd97d"/>
-          <ellipse cx="53" cy="40" rx="5" ry="5.5" fill="#ffd97d"/>
-          <ellipse cx="37" cy="41" rx="2.8" ry="4.5" fill="#111"/>
-          <ellipse cx="53" cy="41" rx="2.8" ry="4.5" fill="#111"/>
-          <circle cx="38.5" cy="38" r="1.3" fill="white"/>
-          <circle cx="54.5" cy="38" r="1.3" fill="white"/>
-          <polygon points="45,46 43,49 47,49" fill="#f4a7b9"/>
-          <path d="M42 49.5 Q45 53 48 49.5" stroke="#f4a7b9" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-          <line x1="22" y1="46" x2="38" y2="47" stroke="#888" stroke-width="1" opacity=".55"/>
-          <line x1="22" y1="50" x2="38" y2="49.5" stroke="#888" stroke-width="1" opacity=".55"/>
-          <line x1="52" y1="47" x2="68" y2="46" stroke="#888" stroke-width="1" opacity=".55"/>
-          <line x1="52" y1="49.5" x2="68" y2="50" stroke="#888" stroke-width="1" opacity=".55"/>
-        </svg>
-        <div class="cat-speech">hi there!</div>
-      </div>
-      <div style="font-size:14px;color:var(--text-dim);font-weight:700;display:flex;align-items:center;gap:8px;">
-        stay curious
-        <svg width="18" height="18"><path d="M9 2 Q14 2 16 7 Q18 12 14 15 Q10 18 6 15 Q2 12 4 7 Q6 2 9 2 Z" fill="none" stroke="#a8c8e8" stroke-width="1.5"/><circle cx="9" cy="8" r="1.2" fill="#a8c8e8"/><line x1="9" y1="10" x2="9" y2="14" stroke="#a8c8e8" stroke-width="1.5" stroke-linecap="round"/></svg>
-        💙
-      </div>
-    </div>
-
-    <div class="f-right">
-      <div class="doodle" style="position:relative;--dur:4s;--del:.5s;margin-bottom:4px;align-self:flex-end;">
-        <svg width="38" height="48"><circle cx="19" cy="22" r="5" fill="#ffd97d"/><ellipse cx="19" cy="8" rx="5" ry="7" stroke="#ffd97d" stroke-width="1.8" fill="white"/><ellipse cx="19" cy="36" rx="5" ry="7" stroke="#ffd97d" stroke-width="1.8" fill="white"/><ellipse cx="7" cy="22" rx="7" ry="5" stroke="#ffd97d" stroke-width="1.8" fill="white"/><ellipse cx="31" cy="22" rx="7" ry="5" stroke="#ffd97d" stroke-width="1.8" fill="white"/><line x1="19" y1="36" x2="19" y2="48" stroke="#a8d8a8" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div>
-        <span class="pink-bar">made with curiosity & caffeine <span>☕</span></span>
-      </div>
-    </div>
-
-  </footer>
+  <!-- ══════════════════════════════════════
+       FOOTER — illustrated dogs scene
+  ══════════════════════════════════════ -->
+  <section class="footer-section">
+    <img class="footer-bg footer-light"
+         src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777542150/footer_itiml9.png"
+         alt="">
+    <img class="footer-bg footer-dark-img"
+         src="https://res.cloudinary.com/djenzu1lm/image/upload/v1777542154/footer-dark_trihqk.png"
+         alt="">
+  </section>
 
 </div><!-- /content -->
 
 <script>
-/* ── cursor ── */
+/* ────────────────────────────────────────
+   CURSOR + SPARKLE TRAIL (always on)
+──────────────────────────────────────── */
 const cur = document.getElementById('cur');
-document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+const syms = ['✦','✧','♡','✿','★','◇','☆','·','˖'];
+const cols  = ['#f4a7b9','#c9a6e8','#ffd97d','#a8d8a8','#a8c8e8'];
 
-/* ── click sparkle ── */
-const syms=['✦','✧','♡','✿','★','◇','☆'];
-const cols=['#f4a7b9','#c9a6e8','#ffd97d','#a8d8a8','#a8c8e8'];
+// inject keyframes once
+const _s = document.createElement('style');
+_s.textContent = `
+@keyframes burst{
+  0%  {opacity:1;transform:translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.25);}
+}
+@keyframes trail{
+  0%  {opacity:.85;transform:translate(0,0) scale(1);}
+  100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.1);}
+}`;
+document.head.appendChild(_s);
+
+// trail: fires every ~60ms on move
+let lastTrail = 0;
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top  = e.clientY + 'px';
+
+  const now = Date.now();
+  if(now - lastTrail < 60) return;
+  lastTrail = now;
+
+  const el = document.createElement('span');
+  el.textContent = syms[Math.floor(Math.random() * syms.length)];
+  const angle = Math.random() * Math.PI * 2;
+  const dist  = 8 + Math.random() * 16;
+  el.style.cssText = [
+    'position:fixed',
+    `left:${e.clientX}px`,
+    `top:${e.clientY}px`,
+    `font-size:${7 + Math.random() * 9}px`,
+    `color:${cols[Math.floor(Math.random() * cols.length)]}`,
+    'pointer-events:none',
+    'z-index:99998',
+    `--tx:${Math.cos(angle)*dist}px`,
+    `--ty:${Math.sin(angle)*dist - 10}px`,
+    'animation:trail .65s ease forwards',
+  ].join(';');
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 650);
+});
+
+// click: bigger burst
 document.addEventListener('click', e => {
-  for(let i=0;i<6;i++){
-    const el=document.createElement('span');
-    el.textContent=syms[Math.floor(Math.random()*syms.length)];
-    const a=Math.random()*Math.PI*2, d=30+Math.random()*45;
-    el.style.cssText=`position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:${12+Math.random()*12}px;color:${cols[Math.floor(Math.random()*cols.length)]};pointer-events:none;z-index:99998;--tx:${Math.cos(a)*d}px;--ty:${Math.sin(a)*d}px;animation:burst .7s ease forwards;`;
+  for(let i = 0; i < 8; i++){
+    const el = document.createElement('span');
+    el.textContent = syms[Math.floor(Math.random() * syms.length)];
+    const a = Math.random() * Math.PI * 2;
+    const d = 28 + Math.random() * 48;
+    el.style.cssText = [
+      'position:fixed',
+      `left:${e.clientX}px`,
+      `top:${e.clientY}px`,
+      `font-size:${12 + Math.random() * 14}px`,
+      `color:${cols[Math.floor(Math.random() * cols.length)]}`,
+      'pointer-events:none',
+      'z-index:99998',
+      `--tx:${Math.cos(a)*d}px`,
+      `--ty:${Math.sin(a)*d}px`,
+      'animation:burst .75s ease forwards',
+    ].join(';');
     document.body.appendChild(el);
-    setTimeout(()=>el.remove(),700);
+    setTimeout(() => el.remove(), 750);
   }
 });
-const s=document.createElement('style');
-s.textContent='@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.3);}}';
-document.head.appendChild(s);
 
-/* ── HERO IMAGE SWAP — listens to theme.js event ── */
+/* ────────────────────────────────────────
+   HERO DARK / LIGHT SWAP
+──────────────────────────────────────── */
 const heroLight = document.getElementById('heroLight');
 const heroDark  = document.getElementById('heroDark');
 function syncHero(){
-  const isDark = document.body.classList.contains('dark');
-  if(isDark){
-    heroLight.classList.remove('active');
-    heroDark.classList.add('active');
-  }else{
-    heroDark.classList.remove('active');
-    heroLight.classList.add('active');
-  }
+  const dark = document.body.classList.contains('dark');
+  heroLight.classList.toggle('active', !dark);
+  heroDark.classList.toggle('active',   dark);
 }
 syncHero();
 document.addEventListener('mp-theme-change', syncHero);
