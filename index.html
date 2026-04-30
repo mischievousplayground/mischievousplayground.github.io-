@@ -92,93 +92,6 @@ body{
 }
 .hero-img.active{opacity:1;}
 
-/* ── DAY / NIGHT TOGGLE ── */
-.toggle-wrap{
-  position:fixed;
-  top:30px;
-  right:36px;
-  z-index:9999;
-  cursor:none;
-}
-.toggle{
-  width:78px;
-  height:38px;
-  background:linear-gradient(120deg,#a8c8e8 0%,#e8f1fb 100%);
-  border-radius:38px;
-  position:relative;
-  box-shadow:inset 2px 3px 6px rgba(0,0,0,.1),0 3px 8px rgba(0,0,0,.12);
-  transition:background .6s ease,box-shadow .4s ease;
-  border:2px solid rgba(255,255,255,.6);
-  cursor:none;
-}
-body.dark .toggle{
-  background:linear-gradient(120deg,#1a1635 0%,#332a55 100%);
-  border-color:rgba(255,255,255,.15);
-  box-shadow:inset 2px 3px 6px rgba(0,0,0,.5),0 3px 12px rgba(120,90,200,.3);
-}
-
-/* tiny clouds in light mode */
-.toggle::before,
-.toggle::after{
-  content:'';position:absolute;
-  background:white;border-radius:50%;
-  transition:opacity .4s ease,transform .6s ease;
-}
-.toggle::before{
-  width:10px;height:6px;top:8px;right:14px;
-  box-shadow:6px 2px 0 -1px white,-5px 1px 0 -2px white;
-  opacity:.85;
-}
-.toggle::after{
-  width:6px;height:4px;bottom:7px;left:16px;
-  box-shadow:5px -1px 0 -1px white;
-  opacity:.7;
-}
-body.dark .toggle::before,
-body.dark .toggle::after{opacity:0;transform:translateX(20px);}
-
-/* tiny stars in dark mode */
-.toggle .stars{
-  position:absolute;inset:0;border-radius:38px;overflow:hidden;
-  opacity:0;transition:opacity .5s ease .15s;pointer-events:none;
-}
-body.dark .toggle .stars{opacity:1;}
-.toggle .stars span{
-  position:absolute;color:#fff8e0;font-size:8px;
-  animation:twinkle 2.4s ease-in-out infinite;
-}
-.toggle .stars span:nth-child(1){top:6px;right:14px;animation-delay:0s;}
-.toggle .stars span:nth-child(2){bottom:6px;right:24px;font-size:6px;animation-delay:.6s;}
-.toggle .stars span:nth-child(3){top:12px;right:28px;font-size:5px;animation-delay:1.2s;}
-@keyframes twinkle{0%,100%{opacity:.4;transform:scale(.8);}50%{opacity:1;transform:scale(1.2);}}
-
-/* sun / moon */
-.toggle .orb{
-  position:absolute;
-  top:3px;left:3px;
-  width:30px;height:30px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#fff5b8 0%,#ffd97d 65%,#f5b94d 100%);
-  box-shadow:0 2px 6px rgba(0,0,0,.18),0 0 14px rgba(255,217,125,.6);
-  transition:left .5s cubic-bezier(.5,1.4,.6,1),background .5s ease,box-shadow .5s ease;
-}
-body.dark .toggle .orb{
-  left:43px;
-  background:radial-gradient(circle at 35% 35%,#fffaf0 0%,#e8e2d0 60%,#b5aa90 100%);
-  box-shadow:0 2px 6px rgba(0,0,0,.4),0 0 18px rgba(232,226,208,.4);
-}
-/* moon craters - shown only in dark mode */
-.toggle .orb::before,
-.toggle .orb::after{
-  content:'';position:absolute;border-radius:50%;
-  background:rgba(150,140,120,.35);
-  opacity:0;transition:opacity .4s ease .2s;
-}
-.toggle .orb::before{width:6px;height:6px;top:7px;right:7px;}
-.toggle .orb::after{width:4px;height:4px;bottom:8px;left:9px;}
-body.dark .toggle .orb::before,
-body.dark .toggle .orb::after{opacity:1;}
-
 /* ══════ CONTENT WRAPPER (everything below hero) ══════ */
 .content{
   position:relative;
@@ -423,7 +336,6 @@ body.dark .pink-bar{background:rgba(248,184,201,.18);}
 /* responsive */
 @media(max-width:900px){
   .hero{height:70vh;min-height:480px;}
-  .toggle-wrap{top:18px;right:18px;}
   .categories,.main-grid{padding-left:20px;padding-right:20px;}
   .main-grid{grid-template-columns:1fr;}
   .box-zines,.box-ww,.box-disc{grid-column:1;}
@@ -435,18 +347,6 @@ body.dark .pink-bar{background:rgba(248,184,201,.18);}
 
 <div id="cur">
   <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="4.5" fill="#f4a7b9" opacity=".9"/><circle cx="10" cy="10" r="8" stroke="#f4a7b9" stroke-width="1.4" opacity=".35"/></svg>
-</div>
-
-<!-- ══ DAY / NIGHT TOGGLE ══ -->
-<div class="toggle-wrap" id="toggleWrap" title="toggle theme">
-  <div class="toggle">
-    <div class="stars">
-      <span>✦</span>
-      <span>✧</span>
-      <span>✦</span>
-    </div>
-    <div class="orb"></div>
-  </div>
 </div>
 
 <!-- ══ HERO BANNER ══ -->
@@ -690,37 +590,22 @@ const s=document.createElement('style');
 s.textContent='@keyframes burst{0%{opacity:1;transform:translate(0,0) scale(1);}100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(.3);}}';
 document.head.appendChild(s);
 
-/* ── DAY / NIGHT TOGGLE ── */
-const toggleWrap = document.getElementById('toggleWrap');
+/* ── HERO IMAGE SWAP — listens to theme.js event ── */
 const heroLight = document.getElementById('heroLight');
 const heroDark  = document.getElementById('heroDark');
-
-function applyTheme(mode){
-  if(mode === 'dark'){
-    document.body.classList.add('dark');
+function syncHero(){
+  const isDark = document.body.classList.contains('dark');
+  if(isDark){
     heroLight.classList.remove('active');
     heroDark.classList.add('active');
   }else{
-    document.body.classList.remove('dark');
     heroDark.classList.remove('active');
     heroLight.classList.add('active');
   }
 }
-
-/* load saved or follow system */
-const saved = localStorage.getItem('mp-theme');
-if(saved){
-  applyTheme(saved);
-}else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-  applyTheme('dark');
-}
-
-toggleWrap.addEventListener('click', () => {
-  const isDark = document.body.classList.contains('dark');
-  const next = isDark ? 'light' : 'dark';
-  applyTheme(next);
-  localStorage.setItem('mp-theme', next);
-});
+syncHero();
+document.addEventListener('mp-theme-change', syncHero);
 </script>
+<script src="theme.js"></script>
 </body>
 </html>

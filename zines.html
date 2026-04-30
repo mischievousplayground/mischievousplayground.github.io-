@@ -389,6 +389,56 @@ nav{
   .tags-box{flex:1;}
   #grid{grid-template-columns:repeat(2,1fr);}
 }
+
+/* ══════ DARK MODE ══════ */
+body.dark{
+  background:#15131f;
+  color:#f0ebf5;
+  background-image:
+    linear-gradient(rgba(180,160,220,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(180,160,220,.05) 1px,transparent 1px);
+  transition:background-color .5s ease,color .5s ease;
+}
+body.dark nav{background:#15131f;border-bottom-color:rgba(255,255,255,.08);}
+body.dark .nav-title{color:#f0ebf5;}
+body.dark .nav-sub{color:#8a7d99;}
+body.dark .nav-links a{color:#c9b8d8;}
+body.dark .nav-links a:hover,
+body.dark .nav-links a.active{color:#fff;}
+body.dark .sticky-nav{background:#3a3520;border-color:rgba(255,255,255,.08);color:#d8c997;}
+body.dark .nav-circle{border-color:#5a4a72;color:#8a7d99;}
+body.dark .torn-line{background:#15131f;}
+body.dark .zines-hero{background:#221f30;box-shadow:2px 3px 10px rgba(0,0,0,.3);}
+body.dark .hero-left h1{color:#fff;}
+body.dark .hero-sub{color:#8a7d99;}
+body.dark .search-wrap{background:#221f30;border-color:rgba(255,255,255,.1);box-shadow:0 2px 8px rgba(0,0,0,.3);}
+body.dark #search{color:#f0ebf5;}
+body.dark #search::placeholder{color:#5a4a72;}
+body.dark .ftag{background:#221f30;border-color:rgba(255,255,255,.1);color:#c9b8d8;}
+body.dark .ftag:hover,body.dark .ftag.active{background:#f8b8c9;color:#15131f;border-color:#f8b8c9;}
+body.dark .sort-wrap{color:#8a7d99;}
+body.dark #sort-select{background:#221f30;color:#c9b8d8;border-color:rgba(255,255,255,.1);}
+body.dark .tags-box{background:#221f30;border-color:rgba(255,255,255,.07);}
+body.dark .tags-box-title{color:#f0ebf5;}
+body.dark .tag-link{color:#c9b8d8;}
+body.dark .tag-link:hover{color:#f8b8c9;}
+body.dark .tag-count{color:#5a4a72;}
+body.dark .decide-box{background:#3a2d52;border-color:rgba(255,255,255,.08);}
+body.dark .decide-title{color:#f0ebf5;}
+body.dark .random-btn{background:#221f30;border-color:#f0ebf5;color:#f0ebf5;}
+body.dark .zine-card{background:#221f30;border-color:rgba(255,255,255,.07);box-shadow:1px 2px 0 rgba(0,0,0,.2);}
+body.dark .zine-card:hover{box-shadow:4px 10px 22px rgba(0,0,0,.5);}
+body.dark .zine-info{border-top-color:rgba(255,255,255,.06);}
+body.dark .zine-name{color:#f0ebf5;}
+body.dark .zine-date{color:#5a4a72;}
+body.dark .ztag{background:#3a2d52;color:#c9b8d8;}
+body.dark .live-badge{background:#f0ebf5;color:#15131f;}
+body.dark .new-badge{background:#ffe09a;color:#15131f;}
+body.dark .soon-overlay{background:rgba(34,31,48,.78);color:#bbb;}
+body.dark .no-results{color:#8a7d99;}
+body.dark .cat-speech-sb{background:#221f30;border-color:#f0ebf5;color:#f0ebf5;}
+body.dark .cat-speech-sb::after{border-top-color:#f0ebf5;}
+body.dark .cat-speech-sb::before{border-top-color:#221f30;}
 </style>
 </head>
 <body>
@@ -670,5 +720,6 @@ renderSidebarTags();
 renderFilterTags();
 renderZines();
 </script>
+<script src="theme.js"></script>
 </body>
 </html>
